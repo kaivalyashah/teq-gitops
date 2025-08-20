@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+  namespace: teq-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+    spec:
+      # If you use an imagePullSecret, uncomment:
+      # imagePullSecrets:
+      #   - name: ecr-creds
+      containers:
+        - name: product
+          image: 605134445572.dkr.ecr.us-east-2.amazonaws.com/theessentialquo/theessentialquo-product-service:CHANGE_ME
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8082
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8082
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          # (optional) pass JVM flags or Spring port override here:
+          # env:
+          #   - name: SERVER_PORT
+          #     value: "8082"
