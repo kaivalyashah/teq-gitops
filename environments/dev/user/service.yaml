@@ -11,3 +11,22 @@ spec:
     - name: http
       port: 80        # service port exposed inside cluster
       targetPort: 8081 # actual container port (Spring Boot user service)
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack       # allow the Helm-managed Prometheus to discover it
+spec:
+  namespaceSelector:
+    matchNames: ["teq-dev"]
+  selector:
+    matchLabels:
+      app: user
+  endpoints:
+    - port: metrics
+      interval: 15s
+      path: /user/actuator/prometheus
+      scheme: http

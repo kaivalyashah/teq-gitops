@@ -27,3 +27,22 @@ spec:
         resources:
           requests: { cpu: "100m", memory: "256Mi" }
           limits:   { cpu: "500m", memory: "512Mi" }
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: product
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack       # allow the Helm-managed Prometheus to discover it
+spec:
+  namespaceSelector:
+    matchNames: ["teq-dev"]
+  selector:
+    matchLabels:
+      app: product
+  endpoints:
+    - port: metrics
+      interval: 15s
+      path: /product/actuator/prometheus
+      scheme: http
