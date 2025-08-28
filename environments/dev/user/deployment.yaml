@@ -14,16 +14,23 @@ spec:
         app: user
     spec:
       containers:
-      - name: user
-        image: 605134445572.dkr.ecr.us-east-2.amazonaws.com/theessentialquo/theessentialquo-user-service:latest
-        ports:
-        - containerPort: 8081
-        readinessProbe:
-          httpGet: { path: /user/actuator/health/readiness, port: 8080 }
-          initialDelaySeconds: 5
-        livenessProbe:
-          httpGet: { path: /user/actuator/health/liveness, port: 8080 }
-          initialDelaySeconds: 10
-        resources:
-          requests: { cpu: "100m", memory: "256Mi" }
-          limits:   { cpu: "500m", memory: "512Mi" }
+        - name: user
+          image: 605134445572.dkr.ecr.us-east-2.amazonaws.com/theessentialquo/theessentialquo-user-service:latest
+          ports:
+            - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /user/actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /user/actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            timeoutSeconds: 2
+            failureThreshold: 3
