@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product
+  name: user
   namespace: teq-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: product
+      app: user
   template:
     metadata:
       labels:
-        app: product
+        app: user
     spec:
       containers:
-      - name: product
-        image: 605134445572.dkr.ecr.us-east-2.amazonaws.com/theessentialquo/theessentialquo-product-service:latest
+      - name: user
+        image: 605134445572.dkr.ecr.us-east-2.amazonaws.com/theessentialquo/theessentialquo-user-service:latest
         ports:
-        - containerPort: 8082
+        - containerPort: 8081
         readinessProbe:
-          httpGet: { path: /actuator/health/readiness, port: 8082 }
+          httpGet: { path: /actuator/health/readiness, port: 8080 }
           initialDelaySeconds: 5
         livenessProbe:
-          httpGet: { path: /actuator/health/liveness, port: 8082 }
+          httpGet: { path: /actuator/health/liveness, port: 8080 }
           initialDelaySeconds: 10
         resources:
           requests: { cpu: "100m", memory: "256Mi" }
