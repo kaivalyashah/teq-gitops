@@ -9,19 +9,19 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: teq-shared
     # adjust health paths to match your app if needed
-    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
+    # alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
 spec:
   rules:
   - http:
       paths:
-      - path: /users
+      - path: /user
         pathType: Prefix
         backend:
           service:
             name: user
             port:
               number: 80
-      - path: /products
+      - path: /product
         pathType: Prefix
         backend:
           service:

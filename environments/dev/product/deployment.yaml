@@ -19,10 +19,10 @@ spec:
         ports:
         - containerPort: 8082
         readinessProbe:
-          httpGet: { path: /actuator/health/readiness, port: 8082 }
+          httpGet: { path: /product/actuator/health/readiness, port: 8082 }
           initialDelaySeconds: 5
         livenessProbe:
-          httpGet: { path: /actuator/health/liveness, port: 8082 }
+          httpGet: { path: /product/actuator/health/liveness, port: 8082 }
           initialDelaySeconds: 10
         resources:
           requests: { cpu: "100m", memory: "256Mi" }
